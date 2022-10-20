@@ -1,20 +1,27 @@
-package com.example.demo;
+import com.twilio.twiml.MessagingResponse;
+import com.twilio.twiml.messaging.Body;
+import com.twilio.twiml.messaging.Message;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import static spark.Spark.*;
 
-@SpringBootApplication
-@RestController
-public class DemoApplication {
+public class SmsApp {
+    public static void main(String[] args) {
+        get("/", (req, res) -> "TwilioQuest rules");
 
-	public static void main(String[] args) {
-		SpringApplication.run(DemoApplication.class, args);
-	}
-
-	@RequestMapping("/")
-	String sayHello() {
-		return "Hello World!";
-	}
+        post("/sms", (req, res) -> {
+            res.type("application/xml");
+            Body body = new Body
+                    .Builder("The Robots are coming! Head for the hills!")
+                    .build();
+            Message sms = new Message
+                    .Builder()
+                    .body(body)
+                    .build();
+            MessagingResponse twiml = new MessagingResponse
+                    .Builder()
+                    .message(sms)
+                    .build();
+            return twiml.toXml();
+        });
+    }
 }
