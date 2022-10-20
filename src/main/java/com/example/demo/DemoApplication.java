@@ -7,10 +7,10 @@ import com.twilio.twiml.TwiMLException;
 
 public class Example {
     public static void main(String[] args) {
-        Body body = new Body.Builder("Hello World!").build();
+        Body body = new Body.Builder("TwilioQuest rules").build();
         Message message = new Message.Builder().body(body).build();
         Redirect redirect = new Redirect
-            .Builder("https://twilioquest.azurewebsites.net/").build();
+            .Builder("https://twilioquest.azurewebsites.net").build();
         MessagingResponse response = new MessagingResponse.Builder()
             .message(message).redirect(redirect).build();
 
