@@ -6,7 +6,7 @@ import static spark.Spark.*;
 
 public class SmsApp {
     public static void main(String[] args) {
-        get("/", (req, res) -> "TwilioQuest rules");
+        get("/", (req, res) -> "Hello Web");
 
         post("/sms", (req, res) -> {
             res.type("application/xml");
