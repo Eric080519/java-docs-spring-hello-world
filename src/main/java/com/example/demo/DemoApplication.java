@@ -1,27 +1,23 @@
-import com.twilio.twiml.MessagingResponse;
 import com.twilio.twiml.messaging.Body;
 import com.twilio.twiml.messaging.Message;
+import com.twilio.twiml.messaging.Redirect;
+import com.twilio.twiml.MessagingResponse;
+import com.twilio.twiml.TwiMLException;
 
-import static spark.Spark.*;
 
-public class SmsApp {
+public class Example {
     public static void main(String[] args) {
-        get("/", (req, res) -> "Hello Web");
+        Body body = new Body.Builder("Hello World!").build();
+        Message message = new Message.Builder().body(body).build();
+        Redirect redirect = new Redirect
+            .Builder("https://twilioquest.azurewebsites.net/").build();
+        MessagingResponse response = new MessagingResponse.Builder()
+            .message(message).redirect(redirect).build();
 
-        post("/sms", (req, res) -> {
-            res.type("application/xml");
-            Body body = new Body
-                    .Builder("The Robots are coming! Head for the hills!")
-                    .build();
-            Message sms = new Message
-                    .Builder()
-                    .body(body)
-                    .build();
-            MessagingResponse twiml = new MessagingResponse
-                    .Builder()
-                    .message(sms)
-                    .build();
-            return twiml.toXml();
-        });
+        try {
+            System.out.println(response.toXml());
+        } catch (TwiMLException e) {
+            e.printStackTrace();
+        }
     }
 }
